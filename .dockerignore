@@ -1,0 +1,9 @@
+.git
+.env
+.env.backup
+.env.production
+node_modules
+vendor
+public/build
+public/hot
+python/__pycache__
