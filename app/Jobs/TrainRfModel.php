@@ -30,11 +30,11 @@ class TrainRfModel implements ShouldQueue
         $scriptPath = base_path('python/train_rf.py');
 
         try {
-            $process = Process::timeout(120)->run([$pythonPath, $scriptPath]);
+            $process = Process::timeout(300)->run([$pythonPath, $scriptPath]);
         } catch (ProcessTimedOutException $e) {
             $request->update([
                 'status' => 'failed',
-                'error_message' => 'Training took too long and was stopped (timeout after 120s).',
+                'error_message' => 'Training took too long and was stopped (timeout after 300s).',
             ]);
             return;
         }

@@ -86,14 +86,14 @@ class ProcessCbrRecommendation implements ShouldQueue
         $scriptPath = base_path('python/cbr_system.py');
 
         try {
-            $process = Process::timeout(30)->run([$pythonPath, $scriptPath, $inputFile, $outputFile]);
+            $process = Process::timeout(120)->run([$pythonPath, $scriptPath, $inputFile, $outputFile]);
         } catch (ProcessTimedOutException $e) {
-            Log::error('CBR script timed out after 30s', ['input_file' => $inputFile]);
+            Log::error('CBR script timed out after 120s', ['input_file' => $inputFile]);
             @unlink($inputFile);
 
             return [
                 'success' => false,
-                'error' => 'CBR script took too long to respond and was stopped (timeout after 30s).',
+                'error' => 'CBR script took too long to respond and was stopped (timeout after 120s).',
             ];
         }
 

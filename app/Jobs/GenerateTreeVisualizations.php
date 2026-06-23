@@ -34,7 +34,7 @@ class GenerateTreeVisualizations implements ShouldQueue
         $scriptPath = base_path('python/visualize_trees.py');
 
         try {
-            $process = Process::timeout(90)->run([
+            $process = Process::timeout(180)->run([
                 $pythonPath,
                 $scriptPath,
                 (string) $this->caseId,
@@ -43,7 +43,7 @@ class GenerateTreeVisualizations implements ShouldQueue
         } catch (ProcessTimedOutException $e) {
             $request->update([
                 'status' => 'failed',
-                'error_message' => 'Tree visualization took too long to generate and was stopped (timeout after 90s).',
+                'error_message' => 'Tree visualization took too long to generate and was stopped (timeout after 180s).',
             ]);
             return;
         }
