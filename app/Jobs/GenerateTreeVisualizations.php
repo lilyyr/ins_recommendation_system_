@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
-use Symfony\Component\Process\Exception\ProcessTimedOutException;
+use Illuminate\Process\Exceptions\ProcessTimedOutException;
 use Throwable;
 
 class GenerateTreeVisualizations implements ShouldQueue
@@ -34,7 +34,7 @@ class GenerateTreeVisualizations implements ShouldQueue
         $scriptPath = base_path('python/visualize_trees.py');
 
         try {
-            $process = Process::timeout(180)->run([
+            $process = Process::timeout(450)->run([
                 $pythonPath,
                 $scriptPath,
                 (string) $this->caseId,
@@ -43,7 +43,7 @@ class GenerateTreeVisualizations implements ShouldQueue
         } catch (ProcessTimedOutException $e) {
             $request->update([
                 'status' => 'failed',
-                'error_message' => 'Tree visualization took too long to generate and was stopped (timeout after 180s).',
+                'error_message' => 'Tree visualization took too long to generate and was stopped (timeout after 450s).',
             ]);
             return;
         }

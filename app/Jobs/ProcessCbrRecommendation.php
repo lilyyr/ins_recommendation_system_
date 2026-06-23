@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
-use Symfony\Component\Process\Exception\ProcessTimedOutException;
+use Illuminate\Process\Exceptions\ProcessTimedOutException;
 use Throwable;
 
 class ProcessCbrRecommendation implements ShouldQueue
@@ -86,14 +86,14 @@ class ProcessCbrRecommendation implements ShouldQueue
         $scriptPath = base_path('python/cbr_system.py');
 
         try {
-            $process = Process::timeout(120)->run([$pythonPath, $scriptPath, $inputFile, $outputFile]);
+            $process = Process::timeout(300)->run([$pythonPath, $scriptPath, $inputFile, $outputFile]);
         } catch (ProcessTimedOutException $e) {
-            Log::error('CBR script timed out after 120s', ['input_file' => $inputFile]);
+            Log::error('CBR script timed out after 300s', ['input_file' => $inputFile]);
             @unlink($inputFile);
 
             return [
                 'success' => false,
-                'error' => 'CBR script took too long to respond and was stopped (timeout after 120s).',
+                'error' => 'CBR script took too long to respond and was stopped (timeout after 300s).',
             ];
         }
 

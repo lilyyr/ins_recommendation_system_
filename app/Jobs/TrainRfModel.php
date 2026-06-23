@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
-use Symfony\Component\Process\Exception\ProcessTimedOutException;
+use Illuminate\Process\Exceptions\ProcessTimedOutException;
 use Throwable;
 
 class TrainRfModel implements ShouldQueue
@@ -30,11 +30,11 @@ class TrainRfModel implements ShouldQueue
         $scriptPath = base_path('python/train_rf.py');
 
         try {
-            $process = Process::timeout(300)->run([$pythonPath, $scriptPath]);
+            $process = Process::timeout(600)->run([$pythonPath, $scriptPath]);
         } catch (ProcessTimedOutException $e) {
             $request->update([
                 'status' => 'failed',
-                'error_message' => 'Training took too long and was stopped (timeout after 300s).',
+                'error_message' => 'Training took too long and was stopped (timeout after 600s).',
             ]);
             return;
         }
