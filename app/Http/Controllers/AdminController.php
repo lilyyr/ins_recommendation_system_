@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    /**
-     * Admin Dashboard
-     */
     public function dashboard()
     {
         $total_consultations = CaseModel::count();
@@ -36,7 +33,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Agent Management - Index
+     * Agents
      */
     public function agentsIndex()
     {
@@ -48,17 +45,11 @@ class AdminController extends Controller
         return view('admin.agents.index', compact('agents'));
     }
 
-    /**
-     * Agent Management - Create
-     */
     public function agentsCreate()
     {
         return view('admin.agents.create');
     }
 
-    /**
-     * Agent Management - Store
-     */
     public function agentsStore(Request $request)
     {
         $validated = $request->validate([
@@ -67,7 +58,7 @@ class AdminController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $agent = User::create([
+        User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
@@ -80,18 +71,12 @@ class AdminController extends Controller
             ->with('success', 'Agent created successfully!');
     }
 
-    /**
-     * Agent Management - Edit
-     */
     public function agentsEdit($id)
     {
         $agent = User::where('role', 'agent')->findOrFail($id);
         return view('admin.agents.edit', compact('agent'));
     }
 
-    /**
-     * Agent Management - Update
-     */
     public function agentsUpdate(Request $request, $id)
     {
         $agent = User::where('role', 'agent')->findOrFail($id);
@@ -117,9 +102,6 @@ class AdminController extends Controller
             ->with('success', 'Agent updated successfully!');
     }
 
-    /**
-     * Agent Management - Delete
-     */
     public function agentsDestroy($id)
     {
         $agent = User::where('role', 'agent')->findOrFail($id);
@@ -130,7 +112,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Product Management - Index
+     * Products
      */
     public function productsIndex()
     {
@@ -138,17 +120,11 @@ class AdminController extends Controller
         return view('admin.products.index', compact('products'));
     }
 
-    /**
-     * Product Management - Create
-     */
     public function productsCreate()
     {
         return view('admin.products.create');
     }
 
-    /**
-     * Product Management - Store
-     */
     public function productsStore(Request $request)
     {
         $validated = $request->validate([
@@ -171,18 +147,12 @@ class AdminController extends Controller
             ->with('success', 'Product created successfully!');
     }
 
-    /**
-     * Product Management - Edit
-     */
     public function productsEdit($id)
     {
         $product = Product::findOrFail($id);
         return view('admin.products.edit', compact('product'));
     }
 
-    /**
-     * Product Management - Update
-     */
     public function productsUpdate(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -207,9 +177,6 @@ class AdminController extends Controller
             ->with('success', 'Product updated successfully!');
     }
 
-    /**
-     * Product Management - Delete
-     */
     public function productsDestroy($id)
     {
         $product = Product::findOrFail($id);
@@ -220,7 +187,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Weight Management - Index
+     * Weights
      */
     public function weightsIndex()
     {
@@ -228,9 +195,6 @@ class AdminController extends Controller
         return view('admin.weights.index', compact('weights'));
     }
 
-    /**
-     * Weight Management - Update
-     */
     public function weightsUpdate(Request $request)
     {
         $validated = $request->validate([
@@ -250,7 +214,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Train Random Forest Model
+     * Random Forest
      */
     public function trainModel()
     {
@@ -269,7 +233,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Poll the status of a previously submitted model training request
+     * Poll the status of a model training request
      */
     public function trainModelStatus($id)
     {

@@ -206,7 +206,7 @@ def calculate_metrics(predictions, all_product_ids):
         else:
             reciprocal_ranks.append(0.0)
 
-        #h Hit Rate @3
+        # Hit Rate @3
         if correct_id in top_ids[:3]:
             hit_rate_at_3.append(1.0)
         else:

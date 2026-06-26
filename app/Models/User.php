@@ -55,7 +55,6 @@ class User extends Authenticatable
     }
 
     // permissions
-
     public function canCreateAgents(): bool
     {
         return $this->isAdmin();
@@ -87,42 +86,26 @@ class User extends Authenticatable
     }
 
     // relationships
-
-    /**
-     * Users created by this user
-     */
     public function createdUsers()
     {
         return $this->hasMany(User::class, 'created_by');
     }
 
-    /**
-     * User who created this user
-     */
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    /**
-     * Consultations conducted by this user (as agent)
-     */
     public function consultations()
     {
         return $this->hasMany(CaseModel::class, 'agent_id');
     }
 
-    /**
-     * Get agents created by this admin
-     */
     public function agents()
     {
         return $this->hasMany(User::class, 'created_by')->where('role', 'agent');
     }
 
-    /**
-     * Get clients created by this user
-     */
     public function clients()
     {
         return $this->hasMany(User::class, 'created_by')->where('role', 'client');

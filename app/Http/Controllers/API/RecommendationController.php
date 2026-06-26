@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Validator;
 
 class RecommendationController extends Controller
 {
-    /**
-     * Get CBR recommendation for new case
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function getRecommendation(Request $request)
     {
         // Sanitization, strips tags and trims whitespace
@@ -134,7 +128,7 @@ class RecommendationController extends Controller
                 'smoked_last_year' => (bool) ($validated['smoked_last_year'] ?? false),
                 'hospitalization_last_5_years' => (bool) ($validated['hospitalization_last_5_years'] ?? false),
                 'lab_tests_last_5_years' => (bool) ($validated['lab_tests_last_5_years'] ?? false),
-                'accident_poisoning_lazst_5_years' => (bool) ($validated['accident_poisoning_last_5_years'] ?? false),
+                'accident_poisoning_last_5_years' => (bool) ($validated['accident_poisoning_last_5_years'] ?? false),
                 'has_disability' => (bool) ($validated['has_disability'] ?? false),
                 'has_serious_illness' => (bool) ($validated['has_serious_illness'] ?? false),
                 'receiving_treatment' => (bool) ($validated['receiving_treatment'] ?? false),
@@ -218,7 +212,7 @@ class RecommendationController extends Controller
     }
 
     /**
-     * Poll the status of a previously submitted recommendation request.
+     * Poll the status of a recommendation request
      */
     public function getRequestStatus($id)
     {
@@ -249,9 +243,6 @@ class RecommendationController extends Controller
         ]);
     }
 
-    /**
-     * Get consultation history
-     */
     public function getHistory(Request $request)
     {
         try {
@@ -303,9 +294,6 @@ class RecommendationController extends Controller
         }
     }
 
-    /**
-     * Get specific consultation
-     */
     public function getConsultation($id)
     {
         $consultation = CaseModel::with(['customer', 'customer.occupation', 'product', 'agent', 'policyHolder'])->find($id);
@@ -330,9 +318,6 @@ class RecommendationController extends Controller
         ]);
     }
 
-    /**
-     * Revise (override) the recommended product for a consultation
-     */
     public function reviseRecommendation(Request $request, $id)
     {
         $consultation = CaseModel::find($id);
@@ -375,9 +360,6 @@ class RecommendationController extends Controller
         ]);
     }
 
-    /**
-     * Get statistics
-     */
     public function getStatistics()
     {
         $query = CaseModel::query();

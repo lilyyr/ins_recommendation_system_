@@ -26,7 +26,7 @@ def get_feature_weights():
     conn.close()
     return [{'feature': w['feature_name'], 'weight': float(w['weight'])} for w in weights]
 
-# Data Preprocessing
+# Preprocessing
 def calculate_age(dob: str) -> int:
     birth_year = int(dob.split('-')[0])
     current_year = datetime.now().year
@@ -321,7 +321,7 @@ def random_forest_proximity(new_vector: np.ndarray, historical_vectors: np.ndarr
     with open(cache_path, 'r') as f:
         leaf_cache = json.load(f)
 
-    # Get leaf nodes for new case
+    # New case leaf nodes
     new_leaves = rf_model.apply(new_vector.reshape(1, -1))[0]
 
     leaf_assignments_dict = leaf_cache['leaf_assignments']
@@ -372,7 +372,7 @@ def random_forest_proximity(new_vector: np.ndarray, historical_vectors: np.ndarr
 
     return results[:k]
 
-# Result Aggregation
+# Aggregate
 def aggregate_results(euclidean: List[Dict], weighted: List[Dict], rf: List[Dict]) -> List[Dict]:
     product_scores = {}
 
